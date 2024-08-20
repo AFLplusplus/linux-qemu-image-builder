@@ -1,0 +1,5 @@
+.venv/
+OVMF*.fd
+output/
+tmp/
+mnt/
