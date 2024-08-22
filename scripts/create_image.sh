@@ -7,7 +7,7 @@ SCRIPTS_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 trap 'error_exit' ERR
 clean
 
-### Creating main directories
+### Preparing main directories
 mkdir -p "${OUTPUT_DIR}" # Output of the creation script
 mkdir -p "${TMP_DIR}" # tmp directory, can be removed at the end of this script
 mkdir -p "${MNT_DIR}" # mnt directory, where qcow2 disk is getting mounted
@@ -37,18 +37,18 @@ echo "[*] Partitionning done."
 
 ### Filesystem create
 echo "[*] Filesystem creation..."
-sudo mkfs.fat -F 32 ${BOOT_DEV}
-sudo mkfs.ext4 ${LINUX_DEV}
+sudo mkfs.fat -F 32 "${BOOT_DEV}"
+sudo mkfs.ext4 "${LINUX_DEV}"
 echo "[*] Filesystem ready."
 
 ### Mount partitions
-sudo mount ${LINUX_DEV} ${MNT_DIR}
+sudo mount "${LINUX_DEV}" "${MNT_DIR}"
 
-sudo mkdir -p ${BOOT_DIR}
-sudo mount ${BOOT_DEV} ${BOOT_DIR}
+sudo mkdir -p "${BOOT_DIR}"
+sudo mount "${BOOT_DEV}" "${BOOT_DIR}"
 
-echo "[*] Downloading required packges..."
-sudo pacstrap -c -K ${MNT_DIR} base base-devel linux linux-firmware mkinitcpio qemu-guest-agent vim
+echo "[*] Installing basic packages..."
+sudo pacstrap -c -P -K "${MNT_DIR}" base base-devel linux linux-firmware mkinitcpio qemu-guest-agent vim
 echo "[*] Packages installed on disk."
 
 ### Generate fstab
@@ -72,12 +72,6 @@ echo "[*] Linux has been set up."
 # sudo arch-chroot "$MNT_DIR" mv /etc/systemd/system/getty.target.wants/getty@tty1.service /etc/systemd/system/getty.target.wants/getty@tty1.service.backup
 # sudo arch-chroot "$MNT_DIR" ln -s /etc/systemd/system/autologin@.service /etc/systemd/system/getty.target.wants/getty@tty1.service
 
-### Run user-provided setup script.
-echo "[*] Running user-provided VM setup..."
-sudo cp -a "${SETUP_DIR}" "${MNT_DIR}/setup/"
-sudo arch-chroot "${MNT_DIR}" /bin/bash /setup/setup.sh
-echo "[*] User setup ran successfully."
-
 ### Install user-provided runtime scripts.
 echo "[*] Copying user runtime content..."
 sudo cp -a "${RUNTIME_DIR}" "${MNT_DIR}/runtime/"
@@ -88,6 +82,12 @@ sudo cp "${TEMPLATE_DIR}/entrypoint.service" "${MNT_DIR}/etc/systemd/system/entr
 sudo arch-chroot "${MNT_DIR}" systemctl daemon-reload
 sudo arch-chroot "${MNT_DIR}" systemctl enable entrypoint
 echo "[*] Entrypoint service is ready."
+
+### Run user-provided setup script.
+echo "[*] Running user-provided VM setup..."
+sudo cp -a "${SETUP_DIR}" "${MNT_DIR}/setup/"
+sudo arch-chroot "${MNT_DIR}" /bin/bash /setup/setup.sh
+echo "[*] User setup ran successfully."
 
 ### Get OVMF
 echo "[*] Fetching OVMF..."

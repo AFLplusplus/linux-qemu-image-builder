@@ -7,6 +7,11 @@ ROOT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 # NBD setup
 sudo modprobe nbd max_part=8
 
+# Prepare build
+trap 'error_exit' ERR
+sudo rm -rf "${OUTPUT_DIR}"
+clean
+
 # Build the docker image creating the Linux disk
 docker build -t linux_img_builder "${ROOT_DIR}"
 
