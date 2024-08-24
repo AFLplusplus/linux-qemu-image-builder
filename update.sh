@@ -11,7 +11,7 @@ clean
 sudo modprobe nbd max_part=8
 
 # Build the docker image creating the Linux disk
-docker build -t linux_img_builder .
+docker build -t linux_img_builder "${ROOT_DIR}"
 
 # Run the container creating the image itself
 docker run --privileged -it --rm \
