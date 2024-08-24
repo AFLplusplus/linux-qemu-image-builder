@@ -48,7 +48,7 @@ sudo mkdir -p "${BOOT_DIR}"
 sudo mount "${BOOT_DEV}" "${BOOT_DIR}"
 
 echo "[*] Installing basic packages..."
-sudo pacstrap -c -P -K "${MNT_DIR}" base base-devel linux linux-firmware mkinitcpio qemu-guest-agent vim
+sudo pacstrap -c -P -K "${MNT_DIR}" base base-devel linux linux-firmware mkinitcpio qemu-guest-agent vim linux-headers
 echo "[*] Packages installed on disk."
 
 ### Generate fstab
