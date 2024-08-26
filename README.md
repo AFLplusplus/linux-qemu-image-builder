@@ -85,13 +85,13 @@ Main scripts, expected to be run by most users:
 - `parameters.sh`: Set of editable parameters and common functions used to create and run the VM.
 - `run.sh`: Run the QEMU VM (with GUI).
 - `run_headless.sh`: Run the QEMU VM (without GUI).
-- `update.sh`: Update `/runtime` (old VM `runtime` will be erased).
+- `update.sh`: Update `/runtime` (old VM `setup` and `runtime` will be erased).
 
 Internal scripts, for more advanced uses:
 - `scripts/create_image.sh`: Create the QEMU image without wrapping the execution in a docker container (main creation script is run there). It highly relies on `sudo`, run it on your host machine at your own risk.
 - `scripts/mount.sh`: Mount the QEMU disk under `mnt`. Can be run on the host machine.
 - `scripts/umount.sh`: Unmount the QEMU disk under `mnt`. Can be run on the host machine. It is supposed to be resilient and can be used to cleanup things in most cases.
-- `scripts/update.sh`: Update the QEMU image `runtime` directory, without wrapping the execution in a docker container.
+- `scripts/update.sh`: Update the QEMU image `setup` and `runtime` directory, without wrapping the execution in a docker container.
 
 Other stuff:
 - `templates`: various files and placeholders used during the creationg of the VM image.
