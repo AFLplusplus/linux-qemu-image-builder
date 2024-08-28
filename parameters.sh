@@ -13,7 +13,7 @@ DEV_PATH=/dev/nbd0
 IMG_NAME=linux
 
 # (virtual) Image size
-IMG_SIZE=12G
+IMG_SIZE=20G
 
 # Boot partition size
 BOOT_SIZE=1G
@@ -35,6 +35,9 @@ RUNTIME_DIR="${ROOT_DIR}/runtime"
 
 # OVMF FD directory
 OVMF_DIR=/usr/share/edk2/x64
+
+# Should network be configured or not
+CONFIGURE_NETWORK=1
 
 
 # === Run parameters ===

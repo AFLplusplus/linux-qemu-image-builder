@@ -7,6 +7,12 @@ SCRIPTS_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 trap 'error_exit' ERR
 clean
 
+PACKAGES_TO_INSTALL=(base base-devel linux linux-firmware mkinitcpio qemu-guest-agent vim linux-headers)
+
+if [ "${CONFIGURE_NETWORK}" -ne "0" ]; then
+    PACKAGES_TO_INSTALL+=(networkmanager)
+fi
+
 ### Preparing main directories
 mkdir -p "${OUTPUT_DIR}" # Output of the creation script
 mkdir -p "${TMP_DIR}" # tmp directory, can be removed at the end of this script
@@ -48,8 +54,20 @@ sudo mkdir -p "${BOOT_DIR}"
 sudo mount "${BOOT_DEV}" "${BOOT_DIR}"
 
 echo "[*] Installing basic packages..."
-sudo pacstrap -c -P -K "${MNT_DIR}" base base-devel linux linux-firmware mkinitcpio qemu-guest-agent vim linux-headers
+sudo pacstrap -c -P -K "${MNT_DIR}" "${PACKAGES_TO_INSTALL[@]}"
+
 echo "[*] Packages installed on disk."
+
+echo "[*] Configuring basic packages..."
+
+if [ "${CONFIGURE_NETWORK}" -ne "0" ]; then
+    sudo arch-chroot "${MNT_DIR}" systemctl enable NetworkManager
+fi
+
+sudo arch-chroot "${MNT_DIR}" pacman-key --init
+sudo arch-chroot "${MNT_DIR}" pacman-key --populate archlinux
+
+echo "[*] Basic packages configured successfully."
 
 ### Generate fstab
 echo "[*] Generating fstab..."
