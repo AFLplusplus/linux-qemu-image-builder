@@ -45,6 +45,9 @@ CONFIGURE_NETWORK=1
 # Choose run accelerator
 QEMU_ACCEL=kvm # kvm or tcg
 
+# Choose nb of cores
+QEMU_DEBUG_NB_CORES=8
+
 # Choose RAM size
 QEMU_RAM=4G
 

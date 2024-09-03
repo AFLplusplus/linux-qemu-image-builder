@@ -7,6 +7,7 @@ ROOT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 qemu-system-x86_64 \
   -accel "$QEMU_ACCEL" \
   -m "$QEMU_RAM" \
+  -smp "$QEMU_DEBUG_NB_CORES" \
   -drive if=pflash,format=raw,readonly=on,file="${OVMF_CODE}" \
   -drive if=pflash,format=raw,snapshot=off,file="${OVMF_VARS}" \
   -blockdev filename="${IMG}",node-name=storage,driver=file \
