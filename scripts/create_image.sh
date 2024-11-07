@@ -107,6 +107,15 @@ sudo cp -a "${SETUP_DIR}" "${MNT_DIR}/setup/"
 sudo arch-chroot "${MNT_DIR}" /bin/bash /setup/setup.sh
 echo "[*] User setup ran successfully."
 
+### Run user-provided first run setup script.
+echo "[*] Running user-provided VM first boot setup..."
+sudo cp "${TEMPLATE_DIR}/setup_firstboot.service"       "${MNT_DIR}/etc/systemd/system/"
+sudo cp -a "${SETUP_FIRSTBOOT_DIR}"                     "${MNT_DIR}/setup_firstboot/"
+sudo cp -a "${TEMPLATE_DIR}/setup_firstboot_wrapper.sh"    "${MNT_DIR}/setup_firstboot/"
+sudo arch-chroot "${MNT_DIR}" systemctl daemon-reload
+sudo arch-chroot "${MNT_DIR}" systemctl enable setup_firstboot
+echo "[*] User first boot setup enabled successfully."
+
 ### Get OVMF
 echo "[*] Fetching OVMF..."
 cp ${OVMF_DIR}/OVMF_{CODE,VARS}.fd ${OUTPUT_DIR}

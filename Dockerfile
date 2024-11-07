@@ -10,6 +10,7 @@ COPY templates /root/templates
 
 COPY parameters.sh /root
 COPY setup /root/setup
+COPY setup_firstboot /root/setup_firstboot
 COPY runtime /root/runtime
 
 

@@ -1,0 +1,9 @@
+[Unit]
+Description=Setup script of the QEMU Linux Virtual Machine.
+
+[Service]
+Type=simple
+ExecStart=/setup_firstboot/setup_firstboot_wrapper.sh
+
+[Install]
+WantedBy=multi-user.target

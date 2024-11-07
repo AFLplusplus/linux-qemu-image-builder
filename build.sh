@@ -24,3 +24,6 @@ docker run --privileged -it --rm \
 
 sudo chown -R "${USER}:${USER}" "${OUTPUT_DIR}"
 
+echo "=== QEMU started, first run setup is getting executed... ==="
+${ROOT_DIR}/run.sh
+echo "=== VM is ready for fuzzing. ==="

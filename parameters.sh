@@ -30,6 +30,9 @@ OUTPUT_DIR="${ROOT_DIR}/output"
 # Setup directory
 SETUP_DIR="${ROOT_DIR}/setup"
 
+# Setup first boot directory
+SETUP_FIRSTBOOT_DIR="${ROOT_DIR}/setup_firstboot"
+
 # Runtime directory
 RUNTIME_DIR="${ROOT_DIR}/runtime"
 
