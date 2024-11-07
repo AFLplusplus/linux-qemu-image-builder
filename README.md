@@ -101,5 +101,5 @@ Other stuff:
 
 We chose [ArchLinux](https://archlinux.org/) as the underlying kernel for multiple reasons:
 - It is  lightweight. It makes it a good candidate to get high performance during fuzzing, by minimizing the amount of programs being run in background with a low memory consumption.
-- It is very close to the vanilla Linux kernel. Thus, it should be easy to adapt these scripts to run with highly customized kernels.
-- It is easy to setup. At least compared to most alternatives.
+- It proposes a kernel very close to the vanilla Linux kernel. Thus, it should be easy to adapt these scripts to run with highly customized kernels.
+- It is easy to setup with scripts from the host. At least compared to most alternatives.
