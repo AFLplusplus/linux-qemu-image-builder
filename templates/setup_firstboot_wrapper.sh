@@ -1,6 +1,7 @@
 #!/bin/bash
 
 if [ -f /setup_successful ]; then
+    echo "VM has already been setup. Stopping early..."
     exit 0
 fi
 
