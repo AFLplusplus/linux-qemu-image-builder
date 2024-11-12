@@ -63,8 +63,8 @@ BOOT_DEV=${DEV_PATH}p1
 LINUX_DEV=${DEV_PATH}p2
 
 IMG="${OUTPUT_DIR}/${IMG_NAME}.qcow2"
-OVMF_CODE="${OUTPUT_DIR}/OVMF_CODE.fd"
-OVMF_VARS="${OUTPUT_DIR}/OVMF_VARS.fd"
+OVMF_CODE="${OUTPUT_DIR}/OVMF_CODE.4m.fd"
+OVMF_VARS="${OUTPUT_DIR}/OVMF_VARS.4m.fd"
 
 # Taken from https://lists.sr.ht/~sircmpwn/sr.ht-dev/patches/53636
 nbd_sync() {

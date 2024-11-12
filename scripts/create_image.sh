@@ -7,7 +7,7 @@ SCRIPTS_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 trap 'error_exit' ERR
 clean
 
-PACKAGES_TO_INSTALL=(base base-devel linux linux-firmware mkinitcpio qemu-guest-agent vim linux-headers git docker docker-compose less)
+PACKAGES_TO_INSTALL=(base base-devel linux linux-firmware mkinitcpio qemu-guest-agent vim linux-headers)
 
 if [ "${CONFIGURE_NETWORK}" -ne "0" ]; then
     PACKAGES_TO_INSTALL+=(networkmanager)
@@ -118,7 +118,7 @@ echo "[*] User first boot setup enabled successfully."
 
 ### Get OVMF
 echo "[*] Fetching OVMF..."
-cp ${OVMF_DIR}/OVMF_{CODE,VARS}.fd ${OUTPUT_DIR}
+cp ${OVMF_DIR}/OVMF_{CODE,VARS}.4m.fd ${OUTPUT_DIR}
 
 ### Setup UEFI
 echo "[*] Applying OVMF hack..."
