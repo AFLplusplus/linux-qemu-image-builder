@@ -7,7 +7,7 @@ SCRIPTS_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 trap 'error_exit' ERR
 clean
 
-PACKAGES_TO_INSTALL=(base base-devel linux linux-firmware mkinitcpio qemu-guest-agent vim linux-headers)
+PACKAGES_TO_INSTALL=(base base-devel linux linux-firmware mkinitcpio qemu-guest-agent vim linux-headers git docker docker-compose less)
 
 if [ "${CONFIGURE_NETWORK}" -ne "0" ]; then
     PACKAGES_TO_INSTALL+=(networkmanager)
