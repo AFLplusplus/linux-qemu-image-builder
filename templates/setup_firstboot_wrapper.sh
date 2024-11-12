@@ -6,3 +6,5 @@ if [ -f /setup_successful ]; then
 fi
 /setup_firstboot/setup_firstboot.sh
 touch /setup_successful
+
+shutdown now
