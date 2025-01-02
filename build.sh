@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 ROOT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
@@ -22,7 +22,7 @@ docker run --privileged -it --rm \
     linux_img_builder \
     /root/scripts/create_image.sh
 
-sudo chown -R "${USER}:${USER}" "${OUTPUT_DIR}"
+sudo chown -R "${USER}:$(id -g)" "${OUTPUT_DIR}"
 
 echo "=== QEMU started, first run setup is getting executed... ==="
 ${ROOT_DIR}/run.sh

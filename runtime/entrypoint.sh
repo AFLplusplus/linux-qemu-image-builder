@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# Put your stuff there
+/runtime/harness
 
-# Exit the VM after successful execution.
 # shutdown now
