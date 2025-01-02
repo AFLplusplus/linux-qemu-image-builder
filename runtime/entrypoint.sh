@@ -1,5 +1,5 @@
 #!/bin/bash
 
-/runtime/harness
+# Put your stuff there
 
 # shutdown now
