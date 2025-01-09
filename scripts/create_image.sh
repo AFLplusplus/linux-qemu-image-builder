@@ -81,6 +81,7 @@ echo "[*] Preparing Linux for UKI mode..."
 sudo mkdir -p "${BOOT_DIR}/efi/EFI/Linux"
 sudo mkdir -p "${MNT_DIR}/etc/cmdline.d"
 sudo cp "${TEMPLATE_DIR}/linux.preset" "${MNT_DIR}/etc/mkinitcpio.d/linux.preset"
+sudo cp "${TEMPLATE_DIR}/libafl.conf" "${MNT_DIR}/etc/cmdline.d/libafl.conf"
 cat "${TEMPLATE_DIR}/root.conf.template" | sed -e "s/<rootuuid>/${ROOT_UUID}/" | sudo tee "${MNT_DIR}/etc/cmdline.d/root.conf" > /dev/null
 sudo arch-chroot "${MNT_DIR}" mkinitcpio -p linux
 echo "[*] Linux has been set up."
