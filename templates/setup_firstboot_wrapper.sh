@@ -4,7 +4,8 @@ if [ -f /setup_successful ]; then
     echo "VM has already been setup. Stopping early..."
     exit 0
 fi
-/setup_firstboot/setup_firstboot.sh
+/setup_firstboot/setup_firstboot.sh || exit 1
+systemctl enable entrypoint
 touch /setup_successful
 
 shutdown now

@@ -96,10 +96,8 @@ echo "[*] Copying user runtime content..."
 sudo cp -a "${RUNTIME_DIR}" "${MNT_DIR}/runtime/"
 echo "[*] User runtime content is ready."
 
-echo "[*] Setting up entrypoint service..."
+echo "[*] Preparing entrypoint service..."
 sudo cp "${TEMPLATE_DIR}/entrypoint.service" "${MNT_DIR}/etc/systemd/system/entrypoint.service"
-sudo arch-chroot "${MNT_DIR}" systemctl daemon-reload
-sudo arch-chroot "${MNT_DIR}" systemctl enable entrypoint
 echo "[*] Entrypoint service is ready."
 
 ### Run user-provided setup script.
