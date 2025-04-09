@@ -5,12 +5,11 @@ RUN pip install --break-system-packages virt-firmware
 
 WORKDIR /root
 
+# Internals
 COPY scripts /root/scripts
 COPY templates /root/templates
 
+# To change by the user
 COPY parameters.sh /root
-COPY setup /root/setup
-COPY setup_firstboot /root/setup_firstboot
-COPY runtime /root/runtime
-
+COPY hooks /root/hooks
 

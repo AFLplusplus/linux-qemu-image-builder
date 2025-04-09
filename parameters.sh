@@ -27,14 +27,17 @@ BOOT_DIR="${MNT_DIR}/boot"
 # configuration files templates location
 OUTPUT_DIR="${ROOT_DIR}/output"
 
+# path to the user hooks
+HOOKS_DIR="${ROOT_DIR}/hooks"
+
 # Setup directory
-SETUP_DIR="${ROOT_DIR}/setup"
+SETUP_DIR="${HOOKS_DIR}/setup"
 
 # Setup first boot directory
-SETUP_FIRSTBOOT_DIR="${ROOT_DIR}/setup_firstboot"
+SETUP_FIRSTBOOT_DIR="${HOOKS_DIR}/setup_firstboot"
 
 # Runtime directory
-RUNTIME_DIR="${ROOT_DIR}/runtime"
+RUNTIME_DIR="${HOOKS_DIR}/runtime"
 
 # OVMF FD directory
 OVMF_DIR=/usr/share/edk2/x64
