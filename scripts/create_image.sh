@@ -88,12 +88,11 @@ echo "[*] Linux has been set up."
 
 ### Add UEFI startup script for headless boot
 echo "[*] Creating UEFI startup script for headless boot..."
-cat > "${TMP_DIR}/startup.nsh" << 'EOF'
+cat > "${BOOT_DIR}/startup.nsh" << 'EOF'
 @echo -off
 fs0:
 \efi\EFI\Linux\arch-linux.efi
 EOF
-sudo cp "${TMP_DIR}/startup.nsh" "${BOOT_DIR}/startup.nsh"
 echo "[*] UEFI startup script created."
 
 # Autologin as root
