@@ -96,9 +96,12 @@ EOF
 echo "[*] UEFI startup script created."
 
 # Autologin as root
-# sudo cp autologin.conf "$MNT_DIR/etc/systemd/system/autologin@.service"
-# sudo arch-chroot "$MNT_DIR" mv /etc/systemd/system/getty.target.wants/getty@tty1.service /etc/systemd/system/getty.target.wants/getty@tty1.service.backup
-# sudo arch-chroot "$MNT_DIR" ln -s /etc/systemd/system/autologin@.service /etc/systemd/system/getty.target.wants/getty@tty1.service
+echo "[*] Adding autologin scripts..."
+sudo mkdir "$MNT_DIR/etc/systemd/system/getty@tty1.service.d/"
+sudo cp "${TEMPLATE_DIR}/autologin.conf" "${MNT_DIR}/etc/systemd/system/getty@tty1.service.d/autologin.conf"
+sudo mkdir "$MNT_DIR/etc/systemd/system/serial-getty@ttyS0.service.d/"
+sudo cp "${TEMPLATE_DIR}/headless-autologin.conf" "${MNT_DIR}/etc/systemd/system/serial-getty@ttyS0.service.d/autologin.conf"
+echo "[*] Autologin setup done."
 
 ### Install user-provided runtime scripts.
 echo "[*] Copying user runtime content..."
