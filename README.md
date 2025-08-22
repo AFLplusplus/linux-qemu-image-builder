@@ -23,7 +23,7 @@ Install docker if it's not already installed.
 Adapt this to your distribution if it's not debian-based.
 
 ```bash
-sudo apt install -y docker.io
+sudo apt install -y docker.io qemu-utils qemu-system-x86 docker-buildx
 ```
 
 Test if the NBD kernel module is installed on your host machine.
@@ -33,13 +33,6 @@ Please install the NBD kernel module to proceed in case of error.
 
 ```bash
 sudo modprobe nbd max_part=8
-```
-
-To run and test the generated disk, QEMU system should be available on your machine.
-Adapt this to your distribution if it's not debian-based.
-
-```bash
-sudo apt install -y qemu
 ```
 
 ## Basic usage
@@ -74,9 +67,10 @@ It is a more common way to configure qemu for fuzzing.
 
 ## Basic modifications
 
-For the simplest modifications, we expect things to happen mostly in `runtime` and `setup`: 
+For the simplest modifications, we expect things to happen mostly in `hooks`. It contains 3 directories, running hooks at different moments of the installation process:
 - `setup` content will be copied under `/setup` in the VM and `/setup/setup.sh` will be run **during disk creation**, chrooted into the disk root directory. Edit `setup/setup.sh` with anything that should be done during the creation of the disk. It is requried to fully recreate the disk (with `build.sh`) if an update should be applied.
 - `runtime` content will be copied under `/runtime` in the VM and `/runtime/entrypoint.sh` will be run **each time the VM starts**. A service has been setup to handle everything automatically. Edit `runtime/entrypoint.sh` with anything that should be run at VM start. It is possible to run `update.sh` to automatically update the QEMU image without recreating the full disk. Beware, the old content of the `/runtime` directory (in the VM) will be lost forever.
+- `runtime_firstboot` content will be copied under `/runtime` in the VM and `/runtime/entrypoint.sh` will be run **each time the VM starts**. A service has been setup to handle everything automatically. Edit `runtime/entrypoint.sh` with anything that should be run at VM start. It is possible to run `update.sh` to automatically update the QEMU image without recreating the full disk. Beware, the old content of the `/runtime` directory (in the VM) will be lost forever.
 
 ## Details
 

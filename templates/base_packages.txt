@@ -1,0 +1,9 @@
+base
+base-devel
+linux
+linux-firmware
+mkinitcpio
+qemu-guest-agent
+vim
+linux-headers
+cmake

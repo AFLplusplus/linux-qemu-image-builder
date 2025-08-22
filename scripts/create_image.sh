@@ -7,12 +7,6 @@ SCRIPTS_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 trap 'error_exit' ERR
 clean
 
-PACKAGES_TO_INSTALL=(base base-devel linux linux-firmware mkinitcpio qemu-guest-agent vim linux-headers)
-
-if [ "${CONFIGURE_NETWORK}" -ne "0" ]; then
-    PACKAGES_TO_INSTALL+=(networkmanager)
-fi
-
 ### Preparing main directories
 mkdir -p "${OUTPUT_DIR}" # Output of the creation script
 mkdir -p "${TMP_DIR}" # tmp directory, can be removed at the end of this script
@@ -54,13 +48,15 @@ sudo mkdir -p "${BOOT_DIR}"
 sudo mount "${BOOT_DEV}" "${BOOT_DIR}"
 
 echo "[*] Installing basic packages..."
-sudo pacstrap -c -P -K "${MNT_DIR}" "${PACKAGES_TO_INSTALL[@]}"
+sudo pacstrap -c -P -K "${MNT_DIR}" - < "$TEMPLATE_DIR/base_packages.txt"
 
-echo "[*] Packages installed on disk."
+echo "[*] Installing user packages..."
+sudo pacstrap -c -P -K "${MNT_DIR}" - < "${SETUP_DIR}/packages.txt"
 
 echo "[*] Configuring basic packages..."
 
 if [ "${CONFIGURE_NETWORK}" -ne "0" ]; then
+    sudo pacstrap -c -P -K "${MNT_DIR}" networkmanager
     sudo arch-chroot "${MNT_DIR}" systemctl enable NetworkManager
 fi
 
@@ -94,11 +90,6 @@ fs0:
 \efi\EFI\Linux\arch-linux.efi
 EOF
 echo "[*] UEFI startup script created."
-
-# Autologin as root
-# sudo cp autologin.conf "$MNT_DIR/etc/systemd/system/autologin@.service"
-# sudo arch-chroot "$MNT_DIR" mv /etc/systemd/system/getty.target.wants/getty@tty1.service /etc/systemd/system/getty.target.wants/getty@tty1.service.backup
-# sudo arch-chroot "$MNT_DIR" ln -s /etc/systemd/system/autologin@.service /etc/systemd/system/getty.target.wants/getty@tty1.service
 
 ### Install user-provided runtime scripts.
 echo "[*] Copying user runtime content..."
