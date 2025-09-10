@@ -1,24 +1,23 @@
 #!/bin/bash
 
-SCRIPTS_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
-. "${SCRIPTS_DIR}/../parameters.sh"
+. "${SCRIPT_DIR}/../parameters.sh"
 
 trap 'error_exit' ERR
 clean
 
 ### Preparing main directories
 mkdir -p "${OUTPUT_DIR}" # Output of the creation script
-mkdir -p "${TMP_DIR}" # tmp directory, can be removed at the end of this script
 mkdir -p "${MNT_DIR}" # mnt directory, where qcow2 disk is getting mounted
 
 ## Disk creation and mount
 qemu-img create -f qcow2 "${IMG}" "${IMG_SIZE}"
 
-echo "[*] Connecting QCOW2 disk to NBD..."
+echo "[*] Mounting QCOW2 disk via NBD..."
 sudo qemu-nbd --connect="${DEV_PATH}" "${IMG}"
 nbd_sync
-echo "[*] QCOW2 disk connected."
+echo "[*] QCOW2 disk mounted."
 
 sudo wipefs "${DEV_PATH}"
 
@@ -67,8 +66,27 @@ echo "[*] Basic packages configured successfully."
 
 ### Generate fstab
 echo "[*] Generating fstab..."
-BOOT_UUID=$(virt-filesystems -a "${IMG}" --long --uuid | grep -i vfat | tr -s " " | cut -d ' ' -f 7)
-ROOT_UUID=$(virt-filesystems -a "${IMG}" --long --uuid | grep -i ext4 | tr -s " " | cut -d ' ' -f 7)
+
+# First, unmount the disk to get write access
+clean
+
+# Fetch info
+echo "[*] Fetching QCOW2 information..."
+# qemu-img info requires the write lock
+VFS_INFO=$(virt-filesystems -a "${IMG}" --long --uuid)
+
+# remount the disk once info has been collected
+clean
+nbd_sync
+sudo qemu-nbd --connect="${DEV_PATH}" "${IMG}"
+nbd_sync
+
+sudo mount "${LINUX_DEV}" "${MNT_DIR}"
+sudo mount "${BOOT_DEV}" "${BOOT_DIR}"
+#"$SCRIPT_DIR/mount.sh"
+
+BOOT_UUID=$(echo "$VFS_INFO" | grep -i vfat | tr -s " " | cut -d ' ' -f 7)
+ROOT_UUID=$(echo "$VFS_INFO" | grep -i ext4 | tr -s " " | cut -d ' ' -f 7)
 cat "${TEMPLATE_DIR}/fstab.template" | sed -e "s/<rootuuid>/${ROOT_UUID}/" | sed -e "s/<bootuuid>/${BOOT_UUID}/" | sudo tee "${MNT_DIR}/etc/fstab" > /dev/null
 echo "[*] fstab ready."
 
@@ -138,6 +156,7 @@ RES="${RES}${PARTUUID_SPLIT[3]}"
 RES="${RES}${PARTUUID_SPLIT[4]}"
 
 # Now RES contains the unparsed PARTUUID, inject it in the efi variable
+mkdir -p "${TMP_DIR}" # tmp directory, can be removed at the end of this script
 cat "${TEMPLATE_DIR}/boot_uefi.json.template" | sed -e "s/XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX/$RES/" > "${TMP_DIR}/boot_uefi.json"
 virt-fw-vars --inplace "${OVMF_VARS}" --set-json "${TMP_DIR}/boot_uefi.json"
 echo "[*] OVMF ready to boot linux automatically."
