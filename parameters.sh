@@ -72,9 +72,9 @@ OVMF_VARS="${OUTPUT_DIR}/OVMF_VARS.4m.fd"
 # Taken from https://lists.sr.ht/~sircmpwn/sr.ht-dev/patches/53636
 nbd_sync() {
     echo "[*] Syncing with NBD device..."
-    for i in $(seq 1 5); do
-        sleep 0.$i
-        partprobe "${DEV_PATH}" && break
+    for i in $(seq 1 10); do
+        sleep $i
+        partprobe "${DEV_PATH}" 2> /dev/null && break
     done
     echo "[*] NBD synced."
 }
